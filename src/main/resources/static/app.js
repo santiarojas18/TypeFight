@@ -27,6 +27,14 @@ var app = (function () {
         };
     };
 
+    var getMousePositionWithPage = function (evt) {
+        canvas = document.getElementById("canvas");
+        var rect = canvas.getBoundingClientRect();
+        return {
+            x: evt.pageX - rect.left,
+            y: evt.pageY - rect.top
+        };
+    };
 
     var connectAndSubscribe = function () {
         console.info('Connecting to WS...');
@@ -38,7 +46,8 @@ var app = (function () {
             console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/newpoint', function (eventbody) {
                 var theObject=JSON.parse(eventbody.body);
-                alert("The point's coordinates are: x = " + theObject.x + ", y = " + theObject.y);
+                var pointToAdd = new Point(theObject.x, theObject.y);
+                addPointToCanvas(pointToAdd);
             });
         });
 
@@ -50,7 +59,19 @@ var app = (function () {
 
         init: function () {
             var can = document.getElementById("canvas");
-            
+            var positions;
+            if(window.PointerEvent) {
+                canvas.addEventListener("pointerdown", function(event){
+                    positions = getMousePositionWithPage(event);
+                    app.publishPoint(positions.x, positions.y);
+                });
+            } else {
+                canvas.addEventListener("mousedown", function(event){
+                    positions = getMousePosition(event);
+                    app.publishPoint(positions.x, positions.y);
+                });
+            }
+
             //websocket connection
             connectAndSubscribe();
         },

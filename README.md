@@ -67,25 +67,40 @@ Para esto, realice lo siguiente:
 	Pestaña 4:  
 	![img_6.png](img_6.png)  
 
-5. __Haga commit de lo realizado, para demarcar el avance de la parte 2.__
+5. __Haga commit de lo realizado, para demarcar el avance de la parte 2.__  
 
 	```bash
 	git commit -m "PARTE 1".
 	```
-
+	Commit:  
+	![img_7.png](img_7.png)
 
 ## Parte II.
 
-Para hacer mas útil la aplicación, en lugar de capturar las coordenadas con campos de formulario, las va a capturar a través de eventos sobre un elemento de tipo \<canvas>. De la misma manera, en lugar de simplemente mostrar las coordenadas enviadas en los eventos a través de 'alertas', va a dibujar dichos puntos en el mismo canvas. Haga uso del mecanismo de captura de eventos de mouse/táctil usado en ejercicios anteriores con este fin.
+__Para hacer más útil la aplicación, en lugar de capturar las coordenadas con campos de formulario, las va a capturar a través de eventos sobre un elemento de tipo \<canvas>. De la misma manera, en lugar de simplemente mostrar las coordenadas enviadas en los eventos a través de 'alertas', va a dibujar dichos puntos en el mismo canvas. Haga uso del mecanismo de captura de eventos de mouse/táctil usado en ejercicios anteriores con este fin.__
 
-1. Haga que el 'callback' asociado al tópico /topic/newpoint en lugar de mostrar una alerta, dibuje un punto en el canvas en las coordenadas enviadas con los eventos recibidos. Para esto puede [dibujar un círculo de radio 1](http://www.w3schools.com/html/html5_canvas.asp).
-4. Ejecute su aplicación en varios navegadores (y si puede en varios computadores, accediendo a la aplicación mendiante la IP donde corre el servidor). Compruebe que a medida que se dibuja un punto, el mismo es replicado en todas las instancias abiertas de la aplicación.
+1. __Haga que el 'callback' asociado al tópico /topic/newpoint en lugar de mostrar una alerta, dibuje un punto en el canvas en las coordenadas enviadas con los eventos recibidos. Para esto puede [dibujar un círculo de radio 1](http://www.w3schools.com/html/html5_canvas.asp).__  
+	Se implementa en el código.
 
-5. Haga commit de lo realizado, para marcar el avance de la parte 2.
+2. __Ejecute su aplicación en varios navegadores (y si puede en varios computadores, accediendo a la aplicación mendiante la IP donde corre el servidor). Compruebe que a medida que se dibuja un punto, el mismo es replicado en todas las instancias abiertas de la aplicación.__  
+	Se abre la aplicación y se ve que no tiene ningún punto pintado:
+	![img_8.png](img_8.png)  
+	Al dar click en el canvas:  
+	Pestaña 1 donde se dio click:  
+	![img_9.png](img_9.png)  
+	Pestaña 2:  
+	![img_11.png](img_11.png)  
+	Pestaña 3:  
+	![img_12.png](img_12.png)  
+	Pestaña 4:  
+	![img_13.png](img_13.png)  
+
+3. __Haga commit de lo realizado, para marcar el avance de la parte 2.__
 
 	```bash
 	git commit -m "PARTE 2".
 	```
+	
 
 ## Parte III.
 
