@@ -9,6 +9,7 @@ var app = (function () {
 
     var tableId = null;
     var stompClient = null;
+    var listenersAdded = false;
 
     var addPointToCanvas = function (point) {        
         var canvas = document.getElementById("canvas");
@@ -16,6 +17,31 @@ var app = (function () {
         ctx.beginPath();
         ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
         ctx.stroke();
+    };
+
+    var paintPolygon = function (points) {
+        var currentPoint;
+        var nextPoint;
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        for (var i = 0; i < points.length - 1; i++) {
+            currentPoint = points[i];
+            addPointToCanvas(currentPoint);
+            nextPoint = points[i + 1];
+            ctx.beginPath();
+            ctx.moveTo(currentPoint.x, currentPoint.y);
+            ctx.lineTo(nextPoint.x ,nextPoint.y);
+            ctx.stroke();
+            ctx.closePath();
+        }
+        currentPoint = points[points.length - 1];
+        addPointToCanvas(currentPoint);
+        nextPoint = points[0];
+        ctx.beginPath();
+        ctx.moveTo(currentPoint.x, currentPoint.y);
+        ctx.lineTo(nextPoint.x ,nextPoint.y);
+        ctx.stroke();
+        ctx.closePath();
     };
     
     
@@ -58,15 +84,22 @@ var app = (function () {
             });
         });
 
+        //subscribe to /topic/newpolygon.tableId when connections succeed
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/newpolygon.' + tableId, function (eventbody) {
+                var theObject=JSON.parse(eventbody.body);
+                cleanCanvas();
+                paintPolygon(theObject);
+            });
+        });
     };
     
     
 
     return {
 
-        init: function (newTableId) {
-            tableId = newTableId;
-            cleanCanvas();
+        addListeners: function () {
             var can = document.getElementById("canvas");
             var positions;
             if(window.PointerEvent) {
@@ -80,6 +113,16 @@ var app = (function () {
                     app.publishPoint(positions.x, positions.y);
                 });
             }
+        },
+
+        init: function (newTableId) {
+            if (!listenersAdded) {
+                app.addListeners();
+                listenersAdded = true;
+            }
+
+            tableId = newTableId;
+            cleanCanvas();
 
             //disconnect connection
             app.disconnect();
@@ -94,7 +137,7 @@ var app = (function () {
             addPointToCanvas(pt);
 
             //publicar el evento
-            stompClient.send("/topic/newpoint." + tableId, {}, JSON.stringify(pt));
+            stompClient.send("/app/newpoint." + tableId, {}, JSON.stringify(pt));
         },
 
         disconnect: function () {
