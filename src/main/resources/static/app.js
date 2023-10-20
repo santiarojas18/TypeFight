@@ -6,7 +6,8 @@ var app = (function () {
             this.y=y;
         }        
     }
-    
+
+    var tableId = null;
     var stompClient = null;
 
     var addPointToCanvas = function (point) {        
@@ -36,15 +37,21 @@ var app = (function () {
         };
     };
 
+    var cleanCanvas = function () {
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    };
+
     var connectAndSubscribe = function () {
         console.info('Connecting to WS...');
         var socket = new SockJS('/stompendpoint');
         stompClient = Stomp.over(socket);
         
-        //subscribe to /topic/newpoint when connections succeed
+        //subscribe to /topic/newpoint.tableId when connections succeed
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/newpoint', function (eventbody) {
+            stompClient.subscribe('/topic/newpoint.' + tableId, function (eventbody) {
                 var theObject=JSON.parse(eventbody.body);
                 var pointToAdd = new Point(theObject.x, theObject.y);
                 addPointToCanvas(pointToAdd);
@@ -57,7 +64,9 @@ var app = (function () {
 
     return {
 
-        init: function () {
+        init: function (newTableId) {
+            tableId = newTableId;
+            cleanCanvas();
             var can = document.getElementById("canvas");
             var positions;
             if(window.PointerEvent) {
@@ -72,6 +81,9 @@ var app = (function () {
                 });
             }
 
+            //disconnect connection
+            app.disconnect();
+
             //websocket connection
             connectAndSubscribe();
         },
@@ -82,14 +94,14 @@ var app = (function () {
             addPointToCanvas(pt);
 
             //publicar el evento
-            stompClient.send("/topic/newpoint", {}, JSON.stringify(pt));
+            stompClient.send("/topic/newpoint." + tableId, {}, JSON.stringify(pt));
         },
 
         disconnect: function () {
             if (stompClient !== null) {
                 stompClient.disconnect();
             }
-            setConnected(false);
+            //setConnected(false);
             console.log("Disconnected");
         }
     };

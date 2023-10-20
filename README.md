@@ -100,16 +100,36 @@ __Para hacer más útil la aplicación, en lugar de capturar las coordenadas con
 	```bash
 	git commit -m "PARTE 2".
 	```
-	
+	Commit:  
+	![img_14.png](img_14.png)
 
 ## Parte III.
 
-Ajuste la aplicación anterior para que pueda manejar más de un dibujo a la vez, manteniendo tópicos independientes. Para esto:
+__Ajuste la aplicación anterior para que pueda manejar más de un dibujo a la vez, manteniendo tópicos independientes. Para esto:__
 
-1. Agregue un campo en la vista, en el cual el usuario pueda ingresar un número. El número corresponderá al identificador del dibujo que se creará.
-2. Modifique la aplicación para que, en lugar de conectarse y suscribirse automáticamente (en la función init()), lo haga a través de botón 'conectarse'. Éste, al oprimirse debe realizar la conexión y suscribir al cliente a un tópico que tenga un nombre dinámico, asociado el identificador ingresado, por ejemplo: /topic/newpoint.25, topic/newpoint.80, para los dibujos 25 y 80 respectivamente.
-3. De la misma manera, haga que las publicaciones se realicen al tópico asociado al identificador ingresado por el usuario.
-4. Rectifique que se puedan realizar dos dibujos de forma independiente, cada uno de éstos entre dos o más clientes.
+1. __Agregue un campo en la vista, en el cual el usuario pueda ingresar un número. El número corresponderá al identificador del dibujo que se creará.__  
+	Pantalla con el botón:  
+	![img_15.png](img_15.png)  
+
+2. __Modifique la aplicación para que, en lugar de conectarse y suscribirse automáticamente (en la función init()), lo haga a través de botón 'conectarse'. Éste, al oprimirse debe realizar la conexión y suscribir al cliente a un tópico que tenga un nombre dinámico, asociado el identificador ingresado, por ejemplo: /topic/newpoint.25, topic/newpoint.80, para los dibujos 25 y 80 respectivamente.__  
+	Se implementó en el código.  
+3. __De la misma manera, haga que las publicaciones se realicen al tópico asociado al identificador ingresado por el usuario.__
+	Se implementó en el código.  
+4. __Rectifique que se puedan realizar dos dibujos de forma independiente, cada uno de éstos entre dos o más clientes.__
+	Se abren dos pestañas:  
+	![img_16.png](img_16.png)  
+	La primera se conecta en la mesa 1:
+	![img_17.png](img_17.png)  
+	La segunda se conecta en la mesa 2:  
+	![img_18.png](img_18.png)  
+ 	En la mesa 1 se dibuja lo siguiente:  
+	![img_19.png](img_19.png)  
+	Mientras que en la mesa 2 no se dibujó nada:  
+	![img_20.png](img_20.png)  
+	Luego en la mesa 2 se dibuja:  
+	![img_21.png](img_21.png)  
+	Y vemos que en la mesa 1 no se dibuja lo que se dibujó en la mesa 2:  
+	![img_22.png](img_22.png)  
 
 	```bash
 	git commit -m "PARTE 3".

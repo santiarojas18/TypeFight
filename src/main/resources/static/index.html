@@ -29,7 +29,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
     
-    <body onload="app.init()">
+    <body>
+        ID: <input id="gameId" type="number"/>
+        <button onclick="app.init($('#gameId').val())">Connect</button>
         <canvas id="canvas" width="800" height="600"></canvas>
     </body>
 </html>
