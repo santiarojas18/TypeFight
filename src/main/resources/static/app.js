@@ -73,7 +73,7 @@ var app = (function () {
         console.info('Connecting to WS...');
         var socket = new SockJS('/stompendpoint');
         stompClient = Stomp.over(socket);
-        
+
         //subscribe to /topic/newpoint.tableId when connections succeed
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
@@ -82,11 +82,7 @@ var app = (function () {
                 var pointToAdd = new Point(theObject.x, theObject.y);
                 addPointToCanvas(pointToAdd);
             });
-        });
 
-        //subscribe to /topic/newpolygon.tableId when connections succeed
-        stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/newpolygon.' + tableId, function (eventbody) {
                 var theObject=JSON.parse(eventbody.body);
                 cleanCanvas();
