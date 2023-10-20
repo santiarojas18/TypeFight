@@ -209,7 +209,7 @@ Para ver cómo manejar esto desde el manejador de eventos STOMP del servidor, re
 	git commit -m "PARTE FINAL".
 	```
 	Commit:
-	![img_31.png](img_31.png)
+	![img_31.png](img/img_31.png)
 
 ### Criterios de evaluación
 
