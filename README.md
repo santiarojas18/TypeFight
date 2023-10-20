@@ -1,7 +1,8 @@
 ### Escuela Colombiana de Ingeniería
 ### Arquitecturas de Software - ARSW
 ### Laboratorio - Broker de Mensajes STOMP con WebSockets + HTML5 Canvas.
-
+## Santiago Arévalo Rojas
+## Juan Felipe Sánchez Pérez
 
 
 - Conectarse con un botón
@@ -30,7 +31,7 @@ Para las partes I y II, usted va a implementar una herramienta de dibujo colabor
 
 Para esto, realice lo siguiente:
 
-1. Haga que la aplicación HTML5/JS al ingresarle en los campos de X y Y, además de graficarlos, los publique en el tópico: /topic/newpoint . Para esto tenga en cuenta (1) usar el cliente STOMP creado en el módulo de JavaScript y (2) enviar la representación textual del objeto JSON (usar JSON.stringify). Por ejemplo:
+1. __Haga que la aplicación HTML5/JS al ingresarle en los campos de X y Y, además de graficarlos, los publique en el tópico: /topic/newpoint . Para esto tenga en cuenta (1) usar el cliente STOMP creado en el módulo de JavaScript y (2) enviar la representación textual del objeto JSON (usar JSON.stringify). Por ejemplo:__
 
 	```javascript
 	//creando un objeto literal
@@ -41,16 +42,32 @@ Para esto, realice lo siguiente:
 	//enviando un objeto creado a partir de una clase
 	stompClient.send("/topic/newpoint", {}, JSON.stringify(pt)); 
 	```
+	Luego de enviar el objeto al tópico, evidenciamos en la consola que efectivamente se realizó de manera correcta, donde podemos ver el SEND y el topic de destino:  
+	![img.png](img.png)
 
-2. Dentro del módulo JavaScript modifique la función de conexión/suscripción al WebSocket, para que la aplicación se suscriba al tópico "/topic/newpoint" (en lugar del tópico /TOPICOXX). Asocie como 'callback' de este suscriptor una función que muestre en un mensaje de alerta (alert()) el evento recibido. Como se sabe que en el tópico indicado se publicarán sólo puntos, extraiga el contenido enviado con el evento (objeto JavaScript en versión de texto), conviértalo en objeto JSON, y extraiga de éste sus propiedades (coordenadas X y Y). Para extraer el contenido del evento use la propiedad 'body' del mismo, y para convertirlo en objeto, use JSON.parse. Por ejemplo:
+2. __Dentro del módulo JavaScript modifique la función de conexión/suscripción al WebSocket, para que la aplicación se suscriba al tópico "/topic/newpoint" (en lugar del tópico /TOPICOXX). Asocie como 'callback' de este suscriptor una función que muestre en un mensaje de alerta (alert()) el evento recibido. Como se sabe que en el tópico indicado se publicarán sólo puntos, extraiga el contenido enviado con el evento (objeto JavaScript en versión de texto), conviértalo en objeto JSON, y extraiga de éste sus propiedades (coordenadas X y Y). Para extraer el contenido del evento use la propiedad 'body' del mismo, y para convertirlo en objeto, use JSON.parse. Por ejemplo:__
 
 	```javascript
 	var theObject=JSON.parse(message.body);
 	```
-3. Compile y ejecute su aplicación. Abra la aplicación en varias pestañas diferentes (para evitar problemas con el caché del navegador, use el modo 'incógnito' en cada prueba).
-4. Ingrese los datos, ejecute la acción del botón, y verifique que en todas la pestañas se haya lanzado la alerta con los datos ingresados.
+	Al crear un nuevo punto y enviarlo al topic, vemos el alert indicando las coordenadas del punto:
+	![img_1.png](img_1.png)  
 
-5. Haga commit de lo realizado, para demarcar el avance de la parte 2.
+3. __Compile y ejecute su aplicación. Abra la aplicación en varias pestañas diferentes (para evitar problemas con el caché del navegador, use el modo 'incógnito' en cada prueba).__  
+	Se abre en 4 pestañas la aplicación:
+	![img_2.png](img_2.png)  
+
+4. __Ingrese los datos, ejecute la acción del botón, y verifique que en todas la pestañas se haya lanzado la alerta con los datos ingresados.__
+	Pestaña 1 en la que se envió el punto:  
+	![img_3.png](img_3.png)  
+	Pestaña 2:  
+	![img_4.png](img_4.png)  
+	Pestaña 3:  
+	![img_5.png](img_5.png)  
+	Pestaña 4:  
+	![img_6.png](img_6.png)  
+
+5. __Haga commit de lo realizado, para demarcar el avance de la parte 2.__
 
 	```bash
 	git commit -m "PARTE 1".
