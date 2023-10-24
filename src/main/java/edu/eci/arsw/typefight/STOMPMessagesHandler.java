@@ -1,6 +1,6 @@
-package edu.eci.arsw.collabpaint;
+package edu.eci.arsw.typefight;
 
-import edu.eci.arsw.collabpaint.model.Point;
+import edu.eci.arsw.typefight.model.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -8,7 +8,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Controller

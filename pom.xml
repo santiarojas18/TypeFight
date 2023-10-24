@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>edu.eci.arsw.msgbroker</groupId>
-    <artifactId>websockets-msbroker-example</artifactId>
+    <groupId>edu.eci.arsw.typefight</groupId>
+    <artifactId>TypeFight</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>websockets-msbroker-example</name>
-    <description>Demo project for Spring Boot</description>
+    <name>TypeFight</name>
+    <description>Web application with real time and concurrency</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

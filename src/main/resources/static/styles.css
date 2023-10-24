@@ -1,1 +1,102 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f0f0f0;
+}
 
+.boxer {
+  position: relative;
+  width: 200px;
+  height: 400px;
+}
+
+/* Aplicar contorno a los elementos del personaje */
+.head, .helmet, .body, .left-leg, .right-leg, .left-hand, .right-hand, .glove {
+  border: 2px solid #000;
+}
+
+.head {
+  background-color: #ffc0cb;
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  top: 10px;
+  left: 60px;
+}
+
+.helmet {
+  background-color: #333;
+  width: 90px;
+  height: 90px;
+  position: absolute;
+  top: 5px;
+  left: 45px;
+}
+
+.body {
+  background-color: #fff;
+  width: 140px;
+  height: 280px;
+  position: absolute;
+  top: 90px;
+  left: 30px;
+}
+
+.left-leg, .right-leg {
+  background-color: #333;
+  width: 30px;
+  height: 100px;
+  position: absolute;
+  top: 175px;
+}
+
+.left-leg {
+  left: 45px;
+}
+
+.right-leg {
+  right: 45px;
+}
+
+.left-hand, .right-hand {
+  background-color: #ffc0cb;
+  width: 40px;
+  height: 150px;
+  position: absolute;
+  top: 50px;
+}
+
+.left-hand {
+  left: -50px;
+  transform-origin: 50% 0%;
+  transform: rotate(30deg);
+  animation: punch 1s ease-in-out infinite alternate;
+}
+
+.right-hand {
+  right: -50px;
+  transform-origin: 50% 0%;
+  transform: rotate(-30deg);
+  animation: punch 1s ease-in-out infinite alternate;
+}
+
+.glove {
+  background-color: #f0f0f0;
+  width: 70px;
+  height: 60px;
+  position: absolute;
+  bottom: 5px;
+  left: 10px;
+}
+
+@keyframes punch {
+  0% {
+    transform: rotate(30deg);
+  }
+  100% {
+    transform: rotate(-30deg);
+  }
+}

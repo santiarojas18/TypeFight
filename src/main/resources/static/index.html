@@ -1,37 +1,26 @@
 <!DOCTYPE html>
-<!--
-Copyright (C) 2016 Pivotal Software, Inc.
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
--->
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="/webjars/jquery/jquery.min.js"></script>
-        <script src="/webjars/sockjs-client/sockjs.min.js"></script>
-        <script src="/webjars/stomp-websocket/stomp.min.js"></script>
-        <script src="/app.js"></script>
-
-    </head>
-
-
-    
-    <body>
-        ID: <input id="gameId" type="number"/>
-        <button onclick="app.init($('#gameId').val())">Connect</button>
-        <canvas id="canvas" width="800" height="600"></canvas>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="boxer">
+    <div class="head">
+        <div class="helmet"></div>
+    </div>
+    <div class="body">
+        <div class="left-leg"></div>
+        <div class="right-leg"></div>
+        <div class="left-hand">
+            <div class="glove"></div>
+        </div>
+        <div class="right-hand">
+            <div class="glove"></div>
+        </div>
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
 </html>
