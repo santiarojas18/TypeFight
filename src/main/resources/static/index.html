@@ -2,8 +2,12 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <link href="http://fonts.cdnfonts.com/css/sf-pixelate" rel="stylesheet">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 </head>
-<body>
+<body onload="app.init()">
 <div class="container">
     <div class="top-pixel-container">
         <!-- Contenedor superior -->
@@ -16,7 +20,10 @@
         <div class="row-container"></div>
         <div class="row-container"></div>
     </div>
+    <div class="wordContainer">
+        <div id="userWord"></div>
+    </div>
 </div>
 <script src="app.js"></script>
 </body>
-</html>
+</html> 
