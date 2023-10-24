@@ -1,102 +1,50 @@
+/* Estilos generales */
 body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-  background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
-.boxer {
-  position: relative;
-  width: 200px;
-  height: 400px;
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Aplicar contorno a los elementos del personaje */
-.head, .helmet, .body, .left-leg, .right-leg, .left-hand, .right-hand, .glove {
-  border: 2px solid #000;
+.top-pixel-container, .bottom-pixel-container {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
-.head {
-  background-color: #ffc0cb;
-  width: 80px;
-  height: 80px;
-  position: absolute;
-  top: 10px;
-  left: 60px;
+/* Estilos específicos para el contenedor inferior */
+.bottom-pixel-container {
+    align-items: center;
+    padding: 10px; /* Espacio alrededor de los subcontenedores */
+    display: flex;
+    flex-direction: row;
+    justify-content: center; /* Centra horizontalmente los subcontenedores */
+    width: 100%; /* Ocupa todo el ancho de la pantalla */
 }
 
-.helmet {
-  background-color: #333;
-  width: 90px;
-  height: 90px;
-  position: absolute;
-  top: 5px;
-  left: 45px;
+
+.row-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 80px; /* Ancho fijo en píxeles de cada subcontenedor (16 píxeles de 5x5) */
+    height: 80px; /* Altura fija en píxeles de cada subcontenedor (16 filas de 5x5) */
+    justify-content: center; /* Alinear hacia el inicio para que los contenedores estén juntos */
+    align-content: flex-start; /* Alineación vertical para que las filas estén justo debajo de otras */
+    margin: 70px;
 }
 
-.body {
-  background-color: #fff;
-  width: 140px;
-  height: 280px;
-  position: absolute;
-  top: 90px;
-  left: 30px;
-}
-
-.left-leg, .right-leg {
-  background-color: #333;
-  width: 30px;
-  height: 100px;
-  position: absolute;
-  top: 175px;
-}
-
-.left-leg {
-  left: 45px;
-}
-
-.right-leg {
-  right: 45px;
-}
-
-.left-hand, .right-hand {
-  background-color: #ffc0cb;
-  width: 40px;
-  height: 150px;
-  position: absolute;
-  top: 50px;
-}
-
-.left-hand {
-  left: -50px;
-  transform-origin: 50% 0%;
-  transform: rotate(30deg);
-  animation: punch 1s ease-in-out infinite alternate;
-}
-
-.right-hand {
-  right: -50px;
-  transform-origin: 50% 0%;
-  transform: rotate(-30deg);
-  animation: punch 1s ease-in-out infinite alternate;
-}
-
-.glove {
-  background-color: #f0f0f0;
-  width: 70px;
-  height: 60px;
-  position: absolute;
-  bottom: 5px;
-  left: 10px;
-}
-
-@keyframes punch {
-  0% {
-    transform: rotate(30deg);
-  }
-  100% {
-    transform: rotate(-30deg);
-  }
+.row-container .pixel {
+    width: 5px;
+    height: 5px;
+    margin: 0;
+    padding: 0;
 }
