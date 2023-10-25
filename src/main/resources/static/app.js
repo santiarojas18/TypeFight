@@ -30,16 +30,15 @@ var app = (function () {
 
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/newpoint.' + tableId, function (eventbody) {
-                var theObject=JSON.parse(eventbody.body);
-                var pointToAdd = new Point(theObject.x, theObject.y);
-                addPointToCanvas(pointToAdd);
+            stompClient.subscribe('/topic/catchword.' + session, function (eventbody) {
+                var theObject=JSON.parse(eventbody);
+                console.log(theObject);
+
             });
 
-            stompClient.subscribe('/topic/newpolygon.' + tableId, function (eventbody) {
+            stompClient.subscribe('/topic/newpolygon.' + session, function (eventbody) {
                 var theObject=JSON.parse(eventbody.body);
-                cleanCanvas();
-                paintPolygon(theObject);
+
             });
         });
     };
@@ -58,17 +57,20 @@ var app = (function () {
                     const currentWord = userWord.textContent;
                     const newWord = currentWord.slice(0, -1); // Elimina el último carácter.
                     userWord.textContent = newWord;
+                } else if (event.key === "Enter") {
+                    // publicar palabra cuando se presiona Enter.
+                    app.publishWrittenWord(userWord.textContent);
                 }
             });            
         },
 
-        init: function (newTableId) {
+        init: function (newSession) {
             if (!listenersAdded) {
                 app.addListeners();
                 listenersAdded = true;
             }
 
-
+            session = newSession;
             //disconnect connection
             app.disconnect();
 
@@ -76,13 +78,12 @@ var app = (function () {
             connectAndSubscribe();
         },
 
-        publishPoint: function(px,py){
-            var pt=new Point(px,py);
-            console.info("publishing point at "+pt);
-            addPointToCanvas(pt);
+        publishWrittenWord: function(writtenWord){
+            console.info("The word written is "+ writtenWord);
+            //addPointToCanvas(pt);
 
             //publicar el evento
-            stompClient.send("/app/newpoint." + tableId, {}, JSON.stringify(pt));
+            stompClient.send("/app/catchword." + session, {}, JSON.stringify(pt));
         },
 
         disconnect: function () {

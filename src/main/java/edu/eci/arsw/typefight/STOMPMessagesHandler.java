@@ -1,6 +1,7 @@
 package edu.eci.arsw.typefight;
 
 import edu.eci.arsw.typefight.model.Point;
+import edu.eci.arsw.typefight.model.TypeFight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -15,21 +16,20 @@ public class STOMPMessagesHandler {
 
     @Autowired
     SimpMessagingTemplate msgt;
-    ConcurrentHashMap<String, ArrayList<Point>> points;
+    //ConcurrentHashMap<String, ArrayList<Point>> points;
+    TypeFight typeFight;
 
     public STOMPMessagesHandler() {
-        points = new ConcurrentHashMap<>();
+        //points = new ConcurrentHashMap<>();
     }
 
-    @MessageMapping("newpoint.{numdibujo}")
-    public void handlePointEvent(Point pt, @DestinationVariable String numdibujo) throws Exception {
-        System.out.println("Nuevo punto recibido en el servidor!:"+pt);
-        points.putIfAbsent(numdibujo, new ArrayList<>());
-        ArrayList<Point> specificPoints = points.get(numdibujo);
-        specificPoints.add(pt);
-        msgt.convertAndSend("/topic/newpoint."+numdibujo, pt);
-        if (specificPoints.size() >= 3) {
-            msgt.convertAndSend("/topic/newpolygon."+numdibujo, specificPoints);
-        }
+    @MessageMapping("catchword.{session}")
+    public void handleWordEvent(String word, @DestinationVariable String session) throws Exception {
+        System.out.println("Palabra escrita!:"+word);
+        typeFight.deleteWord(word);
+        //points.putIfAbsent(numdibujo, new ArrayList<>());
+        //ArrayList<Point> specificPoints = points.get(numdibujo);
+        //specificPoints.add(pt);
+        msgt.convertAndSend("/topic/catchword."+session, word);
     }
 }
