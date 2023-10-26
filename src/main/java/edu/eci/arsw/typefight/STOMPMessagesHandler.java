@@ -1,5 +1,6 @@
 package edu.eci.arsw.typefight;
 
+import edu.eci.arsw.typefight.model.Player;
 import edu.eci.arsw.typefight.model.Point;
 import edu.eci.arsw.typefight.model.TypeFight;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +17,27 @@ public class STOMPMessagesHandler {
 
     @Autowired
     SimpMessagingTemplate msgt;
-    //ConcurrentHashMap<String, ArrayList<Point>> points;
     TypeFight typeFight;
 
     public STOMPMessagesHandler() {
-        //points = new ConcurrentHashMap<>();
+        typeFight = new TypeFight();
     }
 
-    @MessageMapping("catchword.{session}")
-    public void handleWordEvent(String word, @DestinationVariable String session) throws Exception {
+    @MessageMapping("catchword")
+    public void handleWordEvent(String word) throws Exception {
         System.out.println("Palabra escrita!:"+word);
         typeFight.deleteWord(word);
         //points.putIfAbsent(numdibujo, new ArrayList<>());
         //ArrayList<Point> specificPoints = points.get(numdibujo);
         //specificPoints.add(pt);
-        msgt.convertAndSend("/topic/catchword."+session, word);
+        msgt.convertAndSend("/topic/catchword", word);
+    }
+
+    @MessageMapping("newplayer")
+    public void handleNewPlayerEvent(String name) {
+        System.out.println("Jugador añadido:" + name);
+        Player player = new Player(name, typeFight.getColorByPlayers());
+        typeFight.addPlayer(player);
+        msgt.convertAndSend("/topic/newplayer", name);
     }
 }

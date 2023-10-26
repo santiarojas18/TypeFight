@@ -1,18 +1,20 @@
 package edu.eci.arsw.typefight.model;
 
-import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Player {
     private String name;
     private String color;
-    private int health;
-    private ArrayList<String> writtenWords;
+    private AtomicInteger health;
+    private AtomicInteger points;
+    private boolean alive;
 
     public Player(String name, String color){
         this.name = name;
         this.color = color;
-        health = 100;
-        writtenWords = new ArrayList<>();
+        health = new AtomicInteger(100);
+        points = new AtomicInteger(0);
+        alive = true;
 
     }
 
@@ -32,24 +34,41 @@ public class Player {
         this.color = color;
     }
 
-    public int getHealth() {
+    public AtomicInteger getHealth() {
         return health;
     }
 
-    public void setHealth(int health) {
+    public void setHealth(AtomicInteger health) {
         this.health = health;
     }
 
-    public ArrayList<String> getWrittenWords() {
-        return writtenWords;
+    public AtomicInteger getPoints() {
+        return points;
     }
 
-    public void setWrittenWords(ArrayList<String> writtenWords) {
-        this.writtenWords = writtenWords;
+    public void setPoints(int points) {
+        this.points.set(points);
     }
 
-    public int getNumberOfWordsWritten(){
-        return writtenWords.size();
+    public void addPoints(int points) {
+        this.points.addAndGet(points);
+    }
+
+    public void decreaseDamage(int damage){
+        if (health.get() - damage <= 0) {
+            setAlive(false);
+            health.set(0);
+        } else {
+            health.addAndGet(-damage);
+        }
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 
     @Override
@@ -58,7 +77,7 @@ public class Player {
                 "name='" + name + '\'' +
                 ", color='" + color + '\'' +
                 ", health=" + health +
-                ", writtenWords=" + writtenWords +
+                ", points=" + points +
                 '}';
     }
 }

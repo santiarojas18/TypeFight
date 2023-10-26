@@ -1,15 +1,14 @@
 package edu.eci.arsw.typefight.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TypeFight {
     private Player winner;
-    private List<Player> players;
-    private static ArrayList<String> words;
+    private HashMap<String, Player> players;
+    private ArrayList<String> words;
+    private String[] colors;
 
     public TypeFight(){
         words = new ArrayList<>(Arrays.asList("Abrir", "Búsqueda", "Cautivar", "Difuso", "Esencia", "Fabuloso", "Galaxia", "Habilidad", "Inquietud", "Júbilo",
@@ -22,8 +21,8 @@ public class TypeFight {
                 "Té", "Uña", "Vaso", "Whisky", "Xilografía", "Yoyo", "Zoológico", "Alabanza", "Beso", "Caramelo",
                 "Dibujo", "Estrella", "Flauta", "Guitarra", "Hada", "Iglesia", "Juguete", "Kilogramo", "Lobo", "Mar",
                 "Nido", "Océano", "Pantalón", "Quirófano", "Reloj", "Sapo", "Trenza", "Unicornio", "Vela", "Zapato"));
-
-        players = new CopyOnWriteArrayList<>();
+        players = new HashMap<>();
+        colors = new String[] {"Rojo", "Amarillo", "Azul", "Verde", "Naranja"};
     }
 
     public String getRandomWord(){
@@ -37,7 +36,34 @@ public class TypeFight {
     }
 
     public void addPlayer(Player player){
-        players.add(player);
+        players.putIfAbsent(player.getColor(), player);
+    }
+
+    public void addPointToPlayer(String color, String word) {
+        players.get(color).addPoints(word.length());
+    }
+
+    public String getColorByPlayers () {
+        return colors[players.keySet().size()];
+    }
+
+    public void doDamage(String color, String word) {
+        players.get(color).decreaseDamage(word.length());
+    }
+
+
+    public Player isThereAWinner() {
+        int alive = 0;
+        for (Player player : players.values()){
+            if (player.isAlive()){
+                alive++;
+                winner = player;
+            }
+        }
+        if (alive != 1){
+            winner = null;
+        }
+        return winner;
     }
 
     @Override
