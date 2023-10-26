@@ -6,13 +6,13 @@ public class Player {
     private String name;
     private String color;
     private int health;
-    private ArrayList<String> writtenWords;
+    private int points;
 
     public Player(String name, String color){
         this.name = name;
         this.color = color;
         health = 100;
-        writtenWords = new ArrayList<>();
+        points = 0;
 
     }
 
@@ -40,16 +40,16 @@ public class Player {
         this.health = health;
     }
 
-    public ArrayList<String> getWrittenWords() {
-        return writtenWords;
+    public int getPoints() {
+        return points;
     }
 
-    public void setWrittenWords(ArrayList<String> writtenWords) {
-        this.writtenWords = writtenWords;
+    public void setPoints(int points) {
+        this.points = points;
     }
 
-    public int getNumberOfWordsWritten(){
-        return writtenWords.size();
+    public void addPoints(int points) {
+        this.points += points;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class Player {
                 "name='" + name + '\'' +
                 ", color='" + color + '\'' +
                 ", health=" + health +
-                ", writtenWords=" + writtenWords +
+                ", points=" + points +
                 '}';
     }
 }
