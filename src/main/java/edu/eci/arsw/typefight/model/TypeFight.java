@@ -66,6 +66,9 @@ public class TypeFight {
         return winner;
     }
 
+    public int getAmountOfPlayers () {
+        return players.size();
+    }
     @Override
     public String toString() {
         return "TypeFight{" +

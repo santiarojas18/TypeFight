@@ -40,4 +40,10 @@ public class STOMPMessagesHandler {
         typeFight.addPlayer(player);
         msgt.convertAndSend("/topic/newplayer", name);
     }
+
+    @MessageMapping("newentry")
+    public void handleNewEntry () {
+        System.out.println("Entrada registrada");
+        msgt.convertAndSend("/topic/newentry", typeFight.getAmountOfPlayers());
+    }
 }
