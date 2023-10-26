@@ -9,6 +9,7 @@ public class TypeFight {
     private HashMap<String, Player> players;
     private ArrayList<String> words;
     private String[] colors;
+    private String currentWord = null;
 
     public TypeFight(){
         words = new ArrayList<>(Arrays.asList("Abrir", "Búsqueda", "Cautivar", "Difuso", "Esencia", "Fabuloso", "Galaxia", "Habilidad", "Inquietud", "Júbilo",
@@ -72,5 +73,12 @@ public class TypeFight {
                 "winner=" + winner +
                 ", players=" + players +
                 '}';
+    }
+
+    public String getCurrentWord(){
+        if(currentWord == null){
+            currentWord = getRandomWord();
+        }
+        return this.currentWord;
     }
 }

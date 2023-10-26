@@ -1,6 +1,7 @@
 var app = (function () {
 
     var stompClient = null;
+    var currentWord = null;
     var listenersAdded = false;
     const userWord = document.getElementById("userWord");
 
@@ -23,6 +24,15 @@ var app = (function () {
         };
     };
 
+    var displayCurrentWord = function () {
+        var currentWordContainer = document.getElementById("currentWordContainer");
+        currentWordContainer.textContent = currentWord;
+    };
+
+    var requestCurrentWord = function () {
+        stompClient.send("/app/showCurrentWord", {}, "");
+    };
+
     var connectAndSubscribe = function () {
         console.info('Connecting to WS...');
         var socket = new SockJS('/stompendpoint');
@@ -30,16 +40,16 @@ var app = (function () {
 
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/catchword.' + session, function (eventbody) {
+            stompClient.subscribe('/topic/catchword', function (eventbody) {
                 var theObject=JSON.parse(eventbody);
                 console.log(theObject);
 
             });
-
-            stompClient.subscribe('/topic/newpolygon.' + session, function (eventbody) {
-                var theObject=JSON.parse(eventbody.body);
-
+            stompClient.subscribe('/topic/showCurrentWord', function (eventbody) {
+                currentWord = eventbody.body;
+                displayCurrentWord();
             });
+            requestCurrentWord();
         });
     };
     
@@ -70,7 +80,6 @@ var app = (function () {
                 listenersAdded = true;
             }
 
-            session = newSession;
             //disconnect connection
             app.disconnect();
 
@@ -83,7 +92,7 @@ var app = (function () {
             //addPointToCanvas(pt);
 
             //publicar el evento
-            stompClient.send("/app/catchword." + session, {}, JSON.stringify(pt));
+            stompClient.send("/app/catchword", {}, JSON.stringify(pt));
         },
 
         disconnect: function () {

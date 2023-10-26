@@ -23,6 +23,12 @@ public class STOMPMessagesHandler {
         typeFight = new TypeFight();
     }
 
+    @MessageMapping("showCurrentWord")
+    public void getInitialWord() {
+        String currentWord = typeFight.getCurrentWord(); // Obtén la palabra actual desde tu modelo TypeFight
+        msgt.convertAndSend("/topic/showCurrentWord", currentWord); // Envía la palabra actual a todos los jugadores.
+    }
+
     @MessageMapping("catchword")
     public void handleWordEvent(String word) throws Exception {
         System.out.println("Palabra escrita!:"+word);
