@@ -36,7 +36,13 @@ public class STOMPMessagesHandler {
         //points.putIfAbsent(numdibujo, new ArrayList<>());
         //ArrayList<Point> specificPoints = points.get(numdibujo);
         //specificPoints.add(pt);
+        System.out.println("Ganador!:"+typeFight.getSortedPlayers());
         msgt.convertAndSend("/topic/catchword", word);
+        //Hacer cuando se encuentre ganador, que se pregunta cuando se ingresa una palabra a typefight
+        msgt.convertAndSend("/topic/showWinner", typeFight.getSortedPlayers());
+
+
+
     }
 
     @MessageMapping("newplayer")
@@ -46,4 +52,6 @@ public class STOMPMessagesHandler {
         typeFight.addPlayer(player);
         msgt.convertAndSend("/topic/newplayer", name);
     }
+
+
 }

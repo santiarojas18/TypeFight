@@ -11,7 +11,7 @@ var register = (function () {
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/newplayer', function (eventbody) {
-                var theObject=JSON.parse(eventbody);
+                var theObject=JSON.parse(eventbody.body);
                 console.log(theObject);
             });
         });

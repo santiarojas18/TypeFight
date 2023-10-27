@@ -3,6 +3,7 @@ package edu.eci.arsw.typefight.model;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 public class TypeFight {
     private Player winner;
@@ -24,6 +25,17 @@ public class TypeFight {
                 "Nido", "Océano", "Pantalón", "Quirófano", "Reloj", "Sapo", "Trenza", "Unicornio", "Vela", "Zapato"));
         players = new HashMap<>();
         colors = new String[] {"Rojo", "Amarillo", "Azul", "Verde", "Naranja"};
+
+        //Mock
+        Player juan = new Player("Juan", "azul");
+        juan.decreaseHealth(12);
+        players.put("azul",juan);
+        Player santiago = new Player("santiago", "verde");
+        santiago.decreaseHealth(10);
+        players.put("verde",santiago);
+        Player daniel = new Player("daniel", "rojo");
+        daniel.decreaseHealth(14);
+        players.put("rojo",daniel);
     }
 
     public String getRandomWord(){
@@ -49,7 +61,7 @@ public class TypeFight {
     }
 
     public void doDamage(String color, String word) {
-        players.get(color).decreaseDamage(word.length());
+        players.get(color).decreaseHealth(word.length());
     }
 
 
@@ -65,6 +77,12 @@ public class TypeFight {
             winner = null;
         }
         return winner;
+    }
+
+    public List<Player> getSortedPlayers() {
+        List<Player> playerList = new ArrayList<>(players.values());
+        playerList.sort(Comparator.comparing(Player::getHealth, (life1, life2) -> life2.get() - life1.get()));
+        return playerList;
     }
 
     @Override

@@ -54,7 +54,7 @@ public class Player {
         this.points.addAndGet(points);
     }
 
-    public void decreaseDamage(int damage){
+    public void decreaseHealth(int damage){
         if (health.get() - damage <= 0) {
             setAlive(false);
             health.set(0);

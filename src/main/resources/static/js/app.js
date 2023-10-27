@@ -41,8 +41,8 @@ var app = (function () {
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/catchword', function (eventbody) {
-                var theObject=JSON.parse(eventbody);
-                console.log(theObject);
+
+                console.log(eventbody.body);
 
             });
             stompClient.subscribe('/topic/showCurrentWord', function (eventbody) {
@@ -92,7 +92,7 @@ var app = (function () {
             //addPointToCanvas(pt);
 
             //publicar el evento
-            stompClient.send("/app/catchword", {}, JSON.stringify(pt));
+            stompClient.send("/app/catchword", {}, JSON.stringify(writtenWord));
         },
 
         disconnect: function () {
