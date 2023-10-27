@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
@@ -23,9 +24,9 @@ public class STOMPMessagesHandler {
         typeFight = new TypeFight();
     }
 
-    @MessageMapping("showCurrentWord")
+    @Scheduled(fixedRate = 5000) 
     public void getInitialWord() {
-        String currentWord = typeFight.getCurrentWord(); // Obtén la palabra actual desde tu modelo TypeFight
+        String currentWord = typeFight.getRandomWord(); // Obtén la palabra actual desde tu modelo TypeFight
         msgt.convertAndSend("/topic/showCurrentWord", currentWord); // Envía la palabra actual a todos los jugadores.
     }
 

@@ -41,9 +41,7 @@ var app = (function () {
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/catchword', function (eventbody) {
-
                 console.log(eventbody.body);
-
             });
             stompClient.subscribe('/topic/showCurrentWord', function (eventbody) {
                 currentWord = eventbody.body;
