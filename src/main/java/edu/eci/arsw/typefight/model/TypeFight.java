@@ -3,12 +3,14 @@ package edu.eci.arsw.typefight.model;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 public class TypeFight {
     private Player winner;
     private HashMap<String, Player> players;
     private ArrayList<String> words;
     private String[] colors;
+    private String currentWord = null;
 
     public TypeFight(){
         words = new ArrayList<>(Arrays.asList("Abrir", "Búsqueda", "Cautivar", "Difuso", "Esencia", "Fabuloso", "Galaxia", "Habilidad", "Inquietud", "Júbilo",
@@ -23,6 +25,17 @@ public class TypeFight {
                 "Nido", "Océano", "Pantalón", "Quirófano", "Reloj", "Sapo", "Trenza", "Unicornio", "Vela", "Zapato"));
         players = new HashMap<>();
         colors = new String[] {"Rojo", "Amarillo", "Azul", "Verde", "Naranja"};
+
+        //Mock
+        //Player juan = new Player("Juan", "azul");
+        //juan.decreaseHealth(12);
+        //players.put("azul",juan);
+        //Player santiago = new Player("santiago", "verde");
+        //santiago.decreaseHealth(10);
+        //players.put("verde",santiago);
+        //Player daniel = new Player("daniel", "rojo");
+        //daniel.decreaseHealth(14);
+        //players.put("rojo",daniel);
     }
 
     public String getRandomWord(){
@@ -48,7 +61,7 @@ public class TypeFight {
     }
 
     public void doDamage(String color, String word) {
-        players.get(color).decreaseDamage(word.length());
+        players.get(color).decreaseHealth(word.length());
     }
 
 
@@ -69,11 +82,25 @@ public class TypeFight {
     public int getAmountOfPlayers () {
         return players.size();
     }
+
+    public List<Player> getSortedPlayers() {
+        List<Player> playerList = new ArrayList<>(players.values());
+        playerList.sort(Comparator.comparing(Player::getHealth, (life1, life2) -> life2.get() - life1.get()));
+        return playerList;
+    }
+    
     @Override
     public String toString() {
         return "TypeFight{" +
                 "winner=" + winner +
                 ", players=" + players +
                 '}';
+    }
+
+    public String getCurrentWord(){
+        if(currentWord == null){
+            currentWord = getRandomWord();
+        }
+        return this.currentWord;
     }
 }

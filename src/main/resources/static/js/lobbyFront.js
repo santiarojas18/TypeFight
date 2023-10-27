@@ -16,12 +16,13 @@ function createDivForPlayers(players) {
 var playersNumber = 0;
 function changePixels() {
     console.log("running..." + playersNumber);
-    createDivForPlayers(playersNumber);
 
     const pixelContainers = document.querySelectorAll('.row-container');
     for (const pixelDiv of pixelContainers) {
             pixelDiv.innerHTML = ''; // Limpiar el contenido actual del div
     }
+
+    createDivForPlayers(playersNumber);
     if (pixelData === pixelToAdd) {
         pixelData = pixelToChange;
     } else {

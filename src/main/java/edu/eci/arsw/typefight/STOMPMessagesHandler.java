@@ -23,6 +23,12 @@ public class STOMPMessagesHandler {
         typeFight = new TypeFight();
     }
 
+    @MessageMapping("showCurrentWord")
+    public void getInitialWord() {
+        String currentWord = typeFight.getCurrentWord(); // Obtén la palabra actual desde tu modelo TypeFight
+        msgt.convertAndSend("/topic/showCurrentWord", currentWord); // Envía la palabra actual a todos los jugadores.
+    }
+
     @MessageMapping("catchword")
     public void handleWordEvent(String word) throws Exception {
         System.out.println("Palabra escrita!:"+word);
@@ -30,7 +36,13 @@ public class STOMPMessagesHandler {
         //points.putIfAbsent(numdibujo, new ArrayList<>());
         //ArrayList<Point> specificPoints = points.get(numdibujo);
         //specificPoints.add(pt);
+        System.out.println("Ganador!:"+typeFight.getSortedPlayers());
         msgt.convertAndSend("/topic/catchword", word);
+        //Hacer cuando se encuentre ganador, que se pregunta cuando se ingresa una palabra a typefight
+        msgt.convertAndSend("/topic/showWinner", typeFight.getSortedPlayers());
+
+
+
     }
 
     @MessageMapping("newplayer")

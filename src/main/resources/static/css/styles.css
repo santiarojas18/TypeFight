@@ -54,9 +54,6 @@ body {
     align-items: center;
     margin-top: 10vh; /* Margen superior */
     margin-bottom: 10vh; /* Margen inferior */
-}
-
-#userWord {
     font-family: 'SF Pixelate', sans-serif;
     font-size: 1.5em; /* Tamaño de fuente */
 }
