@@ -15,7 +15,7 @@ var lobby = (function () {
                     var theObject=JSON.parse(eventbody.body);
                     console.log(theObject);
                     setPlayersNumber(theObject);
-                });ss
+                });
 
                 resolve(); // Resuelve la promesa cuando la conexión está lista
             });
