@@ -10,7 +10,8 @@ public class TypeFight {
     private HashMap<String, Player> players;
     private ArrayList<String> words;
     private String[] colors;
-    private String currentWord = null;
+    private ArrayList<String> currentWords = new ArrayList<>();
+    public static final int MAX_CURRENT_WORDS = 5; // Máximo de palabras actuales
 
     public TypeFight(){
         words = new ArrayList<>(Arrays.asList("Abrir", "Búsqueda", "Cautivar", "Difuso", "Esencia", "Fabuloso", "Galaxia", "Habilidad", "Inquietud", "Júbilo",
@@ -97,10 +98,13 @@ public class TypeFight {
                 '}';
     }
 
-    public String getCurrentWord(){
-        if(currentWord == null){
-            currentWord = getRandomWord();
+    public void addRandomWord(String word) {
+        if(currentWords.size() < MAX_CURRENT_WORDS){
+            currentWords.add(word);
         }
-        return this.currentWord;
+    }
+
+    public List<String> getCurrentWords() {
+        return currentWords;
     }
 }

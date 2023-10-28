@@ -1,7 +1,8 @@
 var app = (function () {
 
     var stompClient = null;
-    var currentWord = null;
+    var currentWords = [];
+    var paintedWords = [];
     var listenersAdded = false;
     const userWord = document.getElementById("userWord");
 
@@ -24,14 +25,39 @@ var app = (function () {
         };
     };
 
-    var displayCurrentWord = function () {
-        var currentWordContainer = document.getElementById("currentWordContainer");
-        currentWordContainer.textContent = currentWord;
+    var displayCurrentWords = function () {
+        var wordGridContainer = document.getElementById("wordGridContainer");
+        currentWords.forEach(function (word) {
+            // Verifica si la palabra no ha sido pintada previamente en la pantalla
+            if (!paintedWords.some(function (position) {
+                return position.word === word;
+            })) {
+                var wordElement = document.createElement("div");
+                wordElement.textContent = word;
+                wordElement.classList.add("word");
+                // Variables para controlar la posición
+                var row, column;
+                var positionOccupied = true;
+                // Encuentra una posición no ocupada y que no se superponga
+                while (positionOccupied) {
+                    row = Math.floor(Math.random() * 10) + 1; // Número de fila aleatorio
+                    column = Math.floor(Math.random() * 10) + 1; // Número de columna aleatorio
+                    // Verifica si la posición está ocupada por otra palabra
+                    positionOccupied = paintedWords.some(function (position) {
+                        return position.row === row && position.column === column;
+                    });
+                }
+                // Establece la posición de la palabra en la cuadrícula utilizando CSS Grid
+                wordElement.style.gridRow = row;
+                wordElement.style.gridColumn = column;
+                wordGridContainer.appendChild(wordElement);
+                // Agrega la palabra a la lista de palabras pintadas
+                paintedWords.push({ row: row, column: column, word: word });
+            }
+        });
     };
+    
 
-    var requestCurrentWord = function () {
-        stompClient.send("/app/showCurrentWord", {}, "");
-    };
 
     var connectAndSubscribe = function () {
         console.info('Connecting to WS...');
@@ -44,10 +70,10 @@ var app = (function () {
                 console.log(eventbody.body);
             });
             stompClient.subscribe('/topic/showCurrentWord', function (eventbody) {
-                currentWord = eventbody.body;
-                displayCurrentWord();
+                var currentWordsList = JSON.parse(eventbody.body); // Convierte la lista de palabras de formato JSON
+                currentWords = currentWordsList; // Actualiza la lista de palabras actuales
+                displayCurrentWords();
             });
-            requestCurrentWord();
         });
     };
     
