@@ -16,7 +16,7 @@ function createDivForPlayers(players) {
 var playersNumber = 0;
 function changePixels() {
     console.log("running..." + playersNumber);
-    createDivForPlayers(playersNumber);
+    createDivForPlayers(playersNumber); //Funciona
 
     const pixelContainers = document.querySelectorAll('.row-container');
     for (const pixelDiv of pixelContainers) {
