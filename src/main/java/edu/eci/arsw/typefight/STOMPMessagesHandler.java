@@ -26,8 +26,11 @@ public class STOMPMessagesHandler {
 
     @Scheduled(fixedRate = 5000) 
     public void getInitialWord() {
-        String currentWord = typeFight.getRandomWord(); // Obtén la palabra actual desde tu modelo TypeFight
-        msgt.convertAndSend("/topic/showCurrentWord", currentWord); // Envía la palabra actual a todos los jugadores.
+        if(typeFight.getCurrentWords().size() < typeFight.MAX_CURRENT_WORDS){
+            String currentWord = typeFight.getRandomWord(); // Obtén la palabra actual desde tu modelo TypeFight
+            typeFight.addRandomWord(currentWord);
+        }
+        msgt.convertAndSend("/topic/showCurrentWord", typeFight.getCurrentWords()); // Envía la palabra actual a todos los jugadores.
     }
 
     @MessageMapping("catchword")
@@ -41,10 +44,8 @@ public class STOMPMessagesHandler {
         msgt.convertAndSend("/topic/catchword", word);
         //Hacer cuando se encuentre ganador, que se pregunta cuando se ingresa una palabra a typefight
         msgt.convertAndSend("/topic/showWinner", typeFight.getSortedPlayers());
-
-
-
     }
+
 
     @MessageMapping("newplayer")
     public void handleNewPlayerEvent(String name) {
