@@ -16,6 +16,12 @@ var lobby = (function () {
                     console.log(theObject);
                     setPlayersNumber(theObject);
                 });
+
+                stompClient.subscribe('/topic/readytoplay', function (eventbody) {
+                    var theObject=JSON.parse(eventbody.body);
+                    console.log(theObject);
+                    setPlayersNumber(theObject);
+                });
                 resolve(); // Resuelve la promesa cuando la conexión está lista
             });
         });
