@@ -107,4 +107,8 @@ public class TypeFight {
     public List<String> getCurrentWords() {
         return currentWords;
     }
+
+    public Collection<Player> getPlayers () {
+        return players.values();
+    }
 }

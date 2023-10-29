@@ -7,6 +7,18 @@ body {
     font-family: 'SF Pixelate', sans-serif;
 }
 
+h1 {
+    font-family: 'SF Pixelate', sans-serif;
+}
+
+#button-to-play button {
+    font-family: 'SF Pixelate', sans-serif;
+}
+
+#button-to-play {
+    text-align: right;
+}
+
 .container {
     flex: 1;
     display: flex;

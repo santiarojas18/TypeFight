@@ -58,6 +58,9 @@ public class STOMPMessagesHandler {
     @MessageMapping("newentry")
     public void handleNewEntry () {
         System.out.println("Entrada registrada");
-        msgt.convertAndSend("/topic/newentry", typeFight.getAmountOfPlayers());
+        msgt.convertAndSend("/topic/newentry", typeFight.getPlayers());
+        if (typeFight.getAmountOfPlayers() >= 2) {
+            msgt.convertAndSend("/topic/readytoplay", true);
+        }
     }
 }

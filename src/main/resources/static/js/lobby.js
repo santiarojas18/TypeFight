@@ -14,13 +14,11 @@ var lobby = (function () {
                 stompClient.subscribe('/topic/newentry', function (eventbody) {
                     var theObject=JSON.parse(eventbody.body);
                     console.log(theObject);
-                    setPlayersNumber(theObject);
+                    setPlayersNumber(theObject.length, theObject);
                 });
 
                 stompClient.subscribe('/topic/readytoplay', function (eventbody) {
-                    var theObject=JSON.parse(eventbody.body);
-                    console.log(theObject);
-                    setPlayersNumber(theObject);
+                    addButtonToPlay();
                 });
                 resolve(); // Resuelve la promesa cuando la conexión está lista
             });
