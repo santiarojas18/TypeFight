@@ -16,7 +16,6 @@ var lobby = (function () {
                     console.log(theObject);
                     setPlayersNumber(theObject);
                 });
-
                 resolve(); // Resuelve la promesa cuando la conexión está lista
             });
         });
