@@ -61,12 +61,13 @@ body {
 }
 
 .word-grid {
-    width: 250px; /* Ancho del contenedor */
+    width: 300px; /* Ancho del contenedor */
     height: 250px; /* Altura del contenedor */
     display: grid;
-    grid-template-columns: repeat(10, 1fr); /* 10 columnas */
-    grid-template-rows: repeat(10, 1fr); /* 10 filas */
+    grid-template-columns: repeat(4, 1fr); /* 10 columnas */
+    grid-template-rows: repeat(4, 1fr); /* 10 filas */
     grid-gap: 10px; /* Espacio entre las palabras */
+    margin-top: 50px;
 }
 
 .word {
@@ -77,3 +78,33 @@ body {
     font-size: 1.3em; /* Tamaño de fuente */
     
 }
+
+/* Estilos para la barra de vida */
+.life-bar {
+    width: 500px; /* Ancho personalizado de la barra de vida */
+    height: 30px; /* Altura personalizada de la barra de vida */
+    background-color: #efe5e5; /* Color de fondo rojo */
+    border: 1px solid #000; /* Borde de la barra de vida */
+    border-radius: 15px; /* Bordes redondeados */
+    overflow: hidden; /* Para ocultar el exceso de vida */
+    position: absolute;
+    top: 20px; /* Ajusta la posición verticalmente */
+    right: 20px; /* Ajusta la posición horizontalmente */
+}
+
+.life-fill {
+    height: 100%; /* Mantiene la misma altura que la barra de vida */
+    width: 100%; /* Barra de vida llena al inicio */
+    background-color: rgb(255, 8, 0); /* Color de la parte llena de la barra de vida (verde) */
+    position: relative; /* Permite posicionar el texto */
+}
+
+.life-text {
+    position: absolute; /* Posiciona el número en relación con el elemento padre (life-bar) */
+    top: 50%; /* Lo coloca verticalmente en el centro */
+    left: 50%; /* Lo coloca horizontalmente en el centro */
+    transform: translate(-50%, -50%); /* Centra el número */
+    color: #fff; /* Color del número (blanco) */
+    font-size: 16px; /* Tamaño de fuente del número */
+}
+

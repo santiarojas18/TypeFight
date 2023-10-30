@@ -28,6 +28,7 @@ var register = (function () {
 
         publishGamer: function(name){
             //publicar el evento
+            sessionStorage.setItem("username", name);
             stompClient.send("/app/newplayer", {}, name);
         },
 

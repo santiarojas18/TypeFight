@@ -10,7 +10,12 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Controller
@@ -34,18 +39,29 @@ public class STOMPMessagesHandler {
     }
 
     @MessageMapping("catchword")
-    public void handleWordEvent(String word) throws Exception {
-        System.out.println("Palabra escrita!:"+word);
-        typeFight.deleteWord(word);
-        //points.putIfAbsent(numdibujo, new ArrayList<>());
-        //ArrayList<Point> specificPoints = points.get(numdibujo);
-        //specificPoints.add(pt);
-        System.out.println("Ganador!:"+typeFight.getSortedPlayers());
-        msgt.convertAndSend("/topic/catchword", word);
-        //Hacer cuando se encuentre ganador, que se pregunta cuando se ingresa una palabra a typefight
-        msgt.convertAndSend("/topic/showWinner", typeFight.getSortedPlayers());
-    }
+    public void handleWordEvent(String message) throws Exception {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> messageMap = objectMapper.readValue(message, new TypeReference<Map<String,String>>() {});
 
+        String username = messageMap.get("username");
+        String word = messageMap.get("writtenWord");
+
+        List<String> currentWords = typeFight.getCurrentWords(); 
+        if (currentWords.contains(word)) {
+            for (Player player : typeFight.getPlayers()) {
+                String playerName = player.getName();
+                if (!playerName.equals(username)) {
+                    player.decreaseHealth(word.length());
+                    msgt.convertAndSend("/topic/updateHealth." + playerName, player.getHealth());
+                }
+            }
+            typeFight.removeCurrentWord(word);
+            msgt.convertAndSend("/topic/catchword", word);
+        }
+        if(typeFight.isThereAWinner() != null){
+            msgt.convertAndSend("/topic/showWinner", typeFight.getSortedPlayers());
+        }       
+    }
 
     @MessageMapping("newplayer")
     public void handleNewPlayerEvent(String name) {

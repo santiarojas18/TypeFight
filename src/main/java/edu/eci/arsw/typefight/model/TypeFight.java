@@ -111,4 +111,8 @@ public class TypeFight {
     public Collection<Player> getPlayers () {
         return players.values();
     }
+
+    public void removeCurrentWord(String word){
+        currentWords.remove(word);
+    }
 }
