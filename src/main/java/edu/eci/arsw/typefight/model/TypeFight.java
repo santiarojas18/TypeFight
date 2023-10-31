@@ -99,7 +99,7 @@ public class TypeFight {
     }
 
     public void addRandomWord(String word) {
-        if(currentWords.size() < MAX_CURRENT_WORDS){
+        if(currentWords.size() < MAX_CURRENT_WORDS && !currentWords.contains(word)){
             currentWords.add(word);
         }
     }

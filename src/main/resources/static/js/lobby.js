@@ -22,7 +22,7 @@ var lobby = (function () {
                 });
 
                 stompClient.subscribe('/topic/gotoplay', function (eventbody) {
-                    window.location.href = "index.html";
+                    window.location.href = "play.html";
                 });
                 resolve(); // Resuelve la promesa cuando la conexión está lista
             });

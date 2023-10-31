@@ -117,6 +117,16 @@ var app = (function () {
                 life = eventbody.body
                 updateLifeBar();
             });
+            stompClient.subscribe('/topic/thereIsAWinner', function (eventbody) {
+                var theWinner = JSON.parse(eventbody.body);
+                var playerName = theWinner.name;
+                var message = "El ganador es: " + playerName ;
+                alert(message);
+
+                // Redirige a otra página después de que el usuario haga clic en "Aceptar" en el alert
+                window.location.href = 'ranking.html';
+            });
+
         });
     };
     

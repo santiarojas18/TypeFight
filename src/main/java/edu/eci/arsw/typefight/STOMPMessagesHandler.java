@@ -1,10 +1,8 @@
 package edu.eci.arsw.typefight;
 
 import edu.eci.arsw.typefight.model.Player;
-import edu.eci.arsw.typefight.model.Point;
 import edu.eci.arsw.typefight.model.TypeFight;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,10 +11,8 @@ import org.springframework.stereotype.Controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Controller
 public class STOMPMessagesHandler {
@@ -42,6 +38,7 @@ public class STOMPMessagesHandler {
 
     @MessageMapping("catchword")
     public void handleWordEvent(String message) throws Exception {
+
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, String> messageMap = objectMapper.readValue(message, new TypeReference<Map<String,String>>() {});
 
@@ -55,13 +52,15 @@ public class STOMPMessagesHandler {
                 if (!playerName.equals(username)) {
                     player.decreaseHealth(word.length());
                     msgt.convertAndSend("/topic/updateHealth." + playerName, player.getHealth());
+                } else {
+                    player.addPoints(word.length());
                 }
             }
             typeFight.removeCurrentWord(word);
             msgt.convertAndSend("/topic/catchword", word);
         }
         if(typeFight.isThereAWinner() != null){
-            msgt.convertAndSend("/topic/showWinner", typeFight.getSortedPlayers());
+            msgt.convertAndSend("/topic/thereIsAWinner", typeFight.getSortedPlayers().get(0));
         }       
     }
 
@@ -90,5 +89,11 @@ public class STOMPMessagesHandler {
             System.out.println("Ir a jugar!!");
             msgt.convertAndSend("/topic/gotoplay", true);
         }
+    }
+
+    @MessageMapping("showWinner")
+    public void handleShowWinner () {
+        System.out.println("Ganador: " +  typeFight.getSortedPlayers().get(0));
+        msgt.convertAndSend("/topic/showWinner", typeFight.getSortedPlayers());
     }
 }
