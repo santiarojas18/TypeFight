@@ -36,6 +36,10 @@ var ranking = (function () {
                     });
 
                 });
+
+                stompClient.subscribe('/topic/playAgain', function (eventbody) {
+
+                });
                 resolve(); // Resuelve la promesa cuando la conexión está lista
             });
         });
@@ -60,6 +64,16 @@ var ranking = (function () {
             //publicar el evento
             stompClient.send("/app/showWinner", {});
         },
+
+        publishPlayAgain: function(){
+            username = sessionStorage.getItem("username");
+            console.info(username + " wants to Play Again!");
+            //publicar el evento
+            stompClient.send("/app/playAgain", {});
+            window.location.href = "lobby.html";
+
+        },
+
 
         disconnect: function () {
             if (stompClient !== null) {

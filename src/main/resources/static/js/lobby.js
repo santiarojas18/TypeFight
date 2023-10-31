@@ -24,6 +24,12 @@ var lobby = (function () {
                 stompClient.subscribe('/topic/gotoplay', function (eventbody) {
                     window.location.href = "play.html";
                 });
+
+                stompClient.subscribe('/topic/enableButton', function (eventbody) {
+                    var theObject=JSON.parse(eventbody.body);
+                    $("#button-to-start").prop("disabled", false);
+                    setPlayersNumber(theObject.length, theObject);
+                });
                 resolve(); // Resuelve la promesa cuando la conexión está lista
             });
         });

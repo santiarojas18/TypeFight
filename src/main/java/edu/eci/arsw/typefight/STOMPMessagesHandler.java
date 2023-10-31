@@ -21,10 +21,12 @@ public class STOMPMessagesHandler {
     SimpMessagingTemplate msgt;
     TypeFight typeFight;
     int goToPlay;
+    boolean gameReset;
 
     public STOMPMessagesHandler() {
         typeFight = new TypeFight();
         goToPlay = 0;
+        gameReset = false;
     }
 
     @Scheduled(fixedRate = 5000) 
@@ -88,6 +90,8 @@ public class STOMPMessagesHandler {
         if (goToPlay == typeFight.getPlayers().size()) {
             System.out.println("Ir a jugar!!");
             msgt.convertAndSend("/topic/gotoplay", true);
+            goToPlay = 0;
+            gameReset = false;
         }
     }
 
@@ -95,5 +99,17 @@ public class STOMPMessagesHandler {
     public void handleShowWinner () {
         System.out.println("Ganador: " +  typeFight.getSortedPlayers().get(0));
         msgt.convertAndSend("/topic/showWinner", typeFight.getSortedPlayers());
+    }
+
+    @MessageMapping("playAgain")
+    public void handlePlayAgain (String name) {
+        System.out.println("Jugador: " + name + " quiere jugar de nuevo!");
+        if (!gameReset) {
+            gameReset = true;
+            typeFight = new TypeFight();
+        }
+        handleNewPlayerEvent(name);
+        msgt.convertAndSend("/topic/playAgain", name);
+        msgt.convertAndSend("/topic/enableButton", typeFight.getPlayers());
     }
 }
