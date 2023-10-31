@@ -65,6 +65,7 @@ function addButtonToPlay () {
         var myButton = $("<button></button>");
         myButton.text("Jugar");
         myButton.attr('type', 'button');
+        myButton.attr('onclick', 'lobby.publishPlay()');
         $("#button-to-play").append(myButton);
         haveButton = true;
     }

@@ -24,9 +24,11 @@ public class STOMPMessagesHandler {
     @Autowired
     SimpMessagingTemplate msgt;
     TypeFight typeFight;
+    int goToPlay;
 
     public STOMPMessagesHandler() {
         typeFight = new TypeFight();
+        goToPlay = 0;
     }
 
     @Scheduled(fixedRate = 5000) 
@@ -77,6 +79,16 @@ public class STOMPMessagesHandler {
         msgt.convertAndSend("/topic/newentry", typeFight.getPlayers());
         if (typeFight.getAmountOfPlayers() >= 2) {
             msgt.convertAndSend("/topic/readytoplay", true);
+        }
+    }
+
+    @MessageMapping("gotoplay")
+    public void handleGoToPlay () {
+        System.out.println("Jugador quiere jugar!!");
+        goToPlay++;
+        if (goToPlay == typeFight.getPlayers().size()) {
+            System.out.println("Ir a jugar!!");
+            msgt.convertAndSend("/topic/gotoplay", true);
         }
     }
 }

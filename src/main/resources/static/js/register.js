@@ -11,7 +11,6 @@ var register = (function () {
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/newplayer', function (eventbody) {
-                window.location.href = "lobby.html";
             });
         });
     };
@@ -30,6 +29,7 @@ var register = (function () {
             //publicar el evento
             sessionStorage.setItem("username", name);
             stompClient.send("/app/newplayer", {}, name);
+            window.location.href = "lobby.html";
         },
 
         disconnect: function () {

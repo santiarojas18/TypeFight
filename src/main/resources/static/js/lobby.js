@@ -20,6 +20,10 @@ var lobby = (function () {
                 stompClient.subscribe('/topic/readytoplay', function (eventbody) {
                     addButtonToPlay();
                 });
+
+                stompClient.subscribe('/topic/gotoplay', function (eventbody) {
+                    window.location.href = "index.html";
+                });
                 resolve(); // Resuelve la promesa cuando la conexión está lista
             });
         });
@@ -40,6 +44,11 @@ var lobby = (function () {
         publishEntry: function(){
             //publicar el evento
             stompClient.send("/app/newentry", {});
+        },
+
+        publishPlay: function(){
+            //publicar el evento
+            stompClient.send("/app/gotoplay", {});
         },
 
         disconnect: function () {
