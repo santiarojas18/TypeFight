@@ -85,48 +85,59 @@ var app = (function () {
 
 
     var connectAndSubscribe = function () {
-        console.info('Connecting to WS...');
-        var socket = new SockJS('/stompendpoint');
-        stompClient = Stomp.over(socket);
+        return new Promise(function (resolve, reject) {
+            console.info('Connecting to WS...');
+            var socket = new SockJS('/stompendpoint');
+            stompClient = Stomp.over(socket);
 
-        stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/catchword', function (eventbody) {
-                var receivedWord = eventbody.body;
-                console.log("Palabra a borrar" +receivedWord);
-                var wordToRemoveIndex = paintedWords.findIndex(function (position) {
-                    return position.word === receivedWord;
-                });
-                console.log(wordToRemoveIndex);
-                console.log(paintedWords);
-                if (wordToRemoveIndex !== -1) {
-                    var wordElement = document.getElementById(receivedWord);
-                    if (wordElement) {
-                        wordElement.parentNode.removeChild(wordElement);
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/catchword', function (eventbody) {
+                    var receivedWord = eventbody.body;
+                    console.log("Palabra a borrar" +receivedWord);
+                    var wordToRemoveIndex = paintedWords.findIndex(function (position) {
+                        return position.word === receivedWord;
+                    });
+                    console.log(wordToRemoveIndex);
+                    console.log(paintedWords);
+                    if (wordToRemoveIndex !== -1) {
+                        var wordElement = document.getElementById(receivedWord);
+                        if (wordElement) {
+                            wordElement.parentNode.removeChild(wordElement);
+                        }
+                        paintedWords.splice(wordToRemoveIndex, 1);
                     }
-                    paintedWords.splice(wordToRemoveIndex, 1);
-                }
-                userWord.textContent = "";
-            });
-            stompClient.subscribe('/topic/showCurrentWord', function (eventbody) {
-                var currentWordsList = JSON.parse(eventbody.body); // Convierte la lista de palabras de formato JSON
-                currentWords = currentWordsList; // Actualiza la lista de palabras actuales
-                displayCurrentWords();
-            });
-            stompClient.subscribe('/topic/updateHealth.' + username, function (eventbody) {
-                life = eventbody.body
-                updateLifeBar();
-            });
-            stompClient.subscribe('/topic/thereIsAWinner', function (eventbody) {
-                var theWinner = JSON.parse(eventbody.body);
-                var playerName = theWinner.name;
-                var message = "El ganador es: " + playerName ;
-                alert(message);
+                    userWord.textContent = "";
+                });
 
-                // Redirige a otra página después de que el usuario haga clic en "Aceptar" en el alert
-                window.location.href = 'ranking.html';
-            });
+                stompClient.subscribe('/topic/showCurrentWord', function (eventbody) {
+                    var currentWordsList = JSON.parse(eventbody.body); // Convierte la lista de palabras de formato JSON
+                    currentWords = currentWordsList; // Actualiza la lista de palabras actuales
+                    displayCurrentWords();
+                });
 
+                stompClient.subscribe('/topic/updateHealth.' + username, function (eventbody) {
+                    life = eventbody.body
+                    updateLifeBar();
+                });
+
+                stompClient.subscribe('/topic/thereIsAWinner', function (eventbody) {
+                    var theWinner = JSON.parse(eventbody.body);
+                    var playerName = theWinner.name;
+                    var message = "El ganador es: " + playerName ;
+                    alert(message);
+
+                    // Redirige a otra página después de que el usuario haga clic en "Aceptar" en el alert
+                    window.location.href = 'ranking.html';
+                });
+
+                stompClient.subscribe('/topic/newentrygame', function (eventbody) {
+                    var theObject=JSON.parse(eventbody.body);
+                    console.log(theObject);
+                    setPlayersNumber(theObject.length, theObject);
+                });
+                resolve();
+            });
         });
     };
     
@@ -164,7 +175,9 @@ var app = (function () {
             app.disconnect();
 
             //websocket connection
-            connectAndSubscribe();
+            connectAndSubscribe().then(function() {
+                app.publishEntry();
+            });
         },
 
         publishWrittenWord: function(writtenWord){
@@ -178,6 +191,11 @@ var app = (function () {
 
             //publicar el evento
             stompClient.send("/app/catchword", {}, JSON.stringify(message));
+        },
+
+        publishEntry: function(){
+            //publicar el evento
+            stompClient.send("/app/newentrygame", {});
         },
 
         disconnect: function () {

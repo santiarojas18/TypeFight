@@ -112,4 +112,10 @@ public class STOMPMessagesHandler {
         msgt.convertAndSend("/topic/playAgain", name);
         msgt.convertAndSend("/topic/enableButton", typeFight.getPlayers());
     }
+
+    @MessageMapping("newentrygame")
+    public void handleNewEntryGame () {
+        System.out.println("Entrada registrada");
+        msgt.convertAndSend("/topic/newentrygame", typeFight.getPlayers());
+    }
 }

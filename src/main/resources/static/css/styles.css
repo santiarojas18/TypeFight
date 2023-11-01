@@ -5,6 +5,11 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    font-family: 'SF Pixelate', sans-serif;
+}
+
+h1 {
+    font-family: 'SF Pixelate', sans-serif;
 }
 
 .container {
