@@ -134,6 +134,5 @@ public class STOMPMessagesHandler {
         Player player = new Player(name, tempTypeFight.getColorByPlayers());
         tempTypeFight.addPlayer(player);
         msgt.convertAndSend("/topic/playAgain", name);
-        //msgt.convertAndSend("/topic/enableButton", typeFight.getPlayers());
     }
 }
