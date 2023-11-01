@@ -66,10 +66,9 @@ var ranking = (function () {
         },
 
         publishPlayAgain: function(){
-            username = sessionStorage.getItem("username");
-            console.info(username + " wants to Play Again!");
+            const username = sessionStorage.getItem("username");
             //publicar el evento
-            stompClient.send("/app/playAgain", {});
+            stompClient.send("/app/playAgain", {}, username);
             window.location.href = "lobby.html";
 
         },
