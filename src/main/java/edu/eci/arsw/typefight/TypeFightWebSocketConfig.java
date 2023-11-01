@@ -42,9 +42,12 @@ public class TypeFightWebSocketConfig extends AbstractWebSocketMessageBrokerConf
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/stompendpoint").withSockJS();
-        
+        registry.addEndpoint("/stompendpoint")
+                .setAllowedOrigins("*")
+                .withSockJS();
+
     }
+
     
 
 }
