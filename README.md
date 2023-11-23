@@ -2,5 +2,5 @@
 ### Arquitecturas de Software - ARSW
 ### Proyecto - TypeFight
 ## Santiago Arévalo Rojas
-## Andres Camilo Oñate Quimbayo
+## Andrés Camilo Oñate Quimbayo
 ## Juan Felipe Sánchez Pérez
