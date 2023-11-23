@@ -19,18 +19,6 @@ var app = (function () {
         }
     };
 
-    function updateLifeBar() {
-        var lifeFill = document.getElementById("lifeFill");
-        var lifeText = document.getElementById("lifeText");
-        var lifePercentage = (life / 100) * 100; // Ajusta el 100 según el rango de vida máximo
-    
-        // Actualiza el ancho de la barra de vida
-        lifeFill.style.width = lifePercentage + "%";
-    
-        // Actualiza el número de vida
-        lifeText.textContent = life;
-    }
-
     var getMousePosition = function (evt) {
         canvas = document.getElementById("canvas");
         var rect = canvas.getBoundingClientRect();
@@ -133,12 +121,19 @@ var app = (function () {
                     displayCurrentWords();
                 });
 
-                stompClient.subscribe('/topic/updateHealth.' + username, function (eventbody) {
-                    life = eventbody.body
+                stompClient.subscribe('/topic/updateHealth', function (eventbody) {
+                    var players=JSON.parse(eventbody.body);
+                    updatePlayersList(players);
+
+                });
+
+                stompClient.subscribe('/topic/gameOver.' + username, function (eventbody) {
+                    var life=JSON.parse(eventbody.body);
                     if (life <= 0) {
                         document.removeEventListener("keydown", listenerForWritting);
+                        var message = "Usted ha muerto.";
+                        alert(message);
                     }
-                    updateLifeBar();
                 });
 
                 stompClient.subscribe('/topic/thereIsAWinner', function (eventbody) {
@@ -175,7 +170,7 @@ var app = (function () {
             }
 
             setParameters();
-            updateLifeBar();
+            //updateLifeBar();
 
             //disconnect connection
             app.disconnect();

@@ -10,6 +10,8 @@ body {
 
 h1 {
     font-family: 'SF Pixelate', sans-serif;
+    position: absolute;
+    top: calc(100% + 0px);
 }
 
 .container {
@@ -47,6 +49,7 @@ h1 {
     justify-content: center; /* Alinear hacia el inicio para que los contenedores estén juntos */
     align-content: flex-start; /* Alineación vertical para que las filas estén justo debajo de otras */
     margin: 70px;
+    position: relative;
 }
 
 .row-container .pixel {
@@ -86,15 +89,15 @@ h1 {
 
 /* Estilos para la barra de vida */
 .life-bar {
-    width: 500px; /* Ancho personalizado de la barra de vida */
+    width: 200px; /* Ancho personalizado de la barra de vida */
     height: 30px; /* Altura personalizada de la barra de vida */
     background-color: #efe5e5; /* Color de fondo rojo */
     border: 1px solid #000; /* Borde de la barra de vida */
     border-radius: 15px; /* Bordes redondeados */
     overflow: hidden; /* Para ocultar el exceso de vida */
     position: absolute;
-    top: 20px; /* Ajusta la posición verticalmente */
-    right: 20px; /* Ajusta la posición horizontalmente */
+    top: calc(100% + 50px); /* Ajusta la posición verticalmente */
+    /* right: 20px; /* Ajusta la posición horizontalmente */
 }
 
 .life-fill {
@@ -108,8 +111,8 @@ h1 {
     position: absolute; /* Posiciona el número en relación con el elemento padre (life-bar) */
     top: 50%; /* Lo coloca verticalmente en el centro */
     left: 50%; /* Lo coloca horizontalmente en el centro */
-    transform: translate(-50%, -50%); /* Centra el número */
-    color: #fff; /* Color del número (blanco) */
+    transform: translate(-50%, -50%);  /* Centra el número */
+    color: rgb(0, 0, 0); /* Color del número (blanco) */
     font-size: 16px; /* Tamaño de fuente del número */
 }
 
