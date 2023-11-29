@@ -1,11 +1,17 @@
 package edu.eci.arsw.typefight.model;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+
+
 public class TypeFight {
+
     private Player winner;
     private HashMap<String, Player> players;
     private ArrayList<String> words;
@@ -88,8 +94,8 @@ public class TypeFight {
 
     public List<Player> getSortedPlayers() {
         List<Player> playerList = new ArrayList<>(players.values());
-        playerList.sort(Comparator.comparing(Player::getPoints, (points1, points2) -> points2.get() - points1.get())
-                .thenComparing(Player::getHealth, (life1, life2) -> life2.get() - life1.get())
+        playerList.sort(Comparator.comparing(Player::getPoints, (points1, points2) -> points2 - points1)
+                .thenComparing(Player::getHealth, (life1, life2) -> life2 - life1)
         );
         return playerList;
     }

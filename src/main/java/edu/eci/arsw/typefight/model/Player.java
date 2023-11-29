@@ -1,19 +1,29 @@
 package edu.eci.arsw.typefight.model;
 
+import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class Player {
+import org.springframework.data.annotation.Id;
+import org.springframework.data.redis.core.RedisHash;
+
+import lombok.Data;
+
+@Data
+@RedisHash("Player")
+public class Player implements Serializable {
+    @Id
     private String name;
+
     private String color;
-    private AtomicInteger health;
-    private AtomicInteger points;
+    private Integer health;
+    private Integer points;
     private boolean alive;
 
     public Player(String name, String color){
         this.name = name;
         this.color = color;
-        health = new AtomicInteger(100);
-        points = new AtomicInteger(0);
+        health = 100;
+        points = 0;
         alive = true;
 
     }
@@ -34,32 +44,32 @@ public class Player {
         this.color = color;
     }
 
-    public AtomicInteger getHealth() {
+    public Integer getHealth() {
         return health;
     }
 
-    public void setHealth(AtomicInteger health) {
+    public void setHealth(Integer health) {
         this.health = health;
     }
 
-    public AtomicInteger getPoints() {
+    public Integer getPoints() {
         return points;
     }
 
     public void setPoints(int points) {
-        this.points.set(points);
+        this.points = points;
     }
 
     public void addPoints(int points) {
-        this.points.addAndGet(points);
+        this.points += points;
     }
 
     public void decreaseHealth(int damage){
-        if (health.get() - damage <= 0) {
+        if (health - damage <= 0) {
             setAlive(false);
-            health.set(0);
+            health = 0;
         } else {
-            health.addAndGet(-damage);
+            health += -damage;
         }
     }
 

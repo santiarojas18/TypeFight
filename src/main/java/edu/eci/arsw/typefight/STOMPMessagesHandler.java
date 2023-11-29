@@ -2,6 +2,8 @@ package edu.eci.arsw.typefight;
 
 import edu.eci.arsw.typefight.model.Player;
 import edu.eci.arsw.typefight.model.TypeFight;
+import edu.eci.arsw.typefight.repository.PlayerRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -14,12 +16,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Controller
 public class STOMPMessagesHandler {
 
     @Autowired
     SimpMessagingTemplate msgt;
+
+    @Autowired
+    PlayerRepository playerRepository;
+    
     TypeFight typeFight, tempTypeFight;
     int goToPlay;
     boolean gameReset;
@@ -83,6 +91,7 @@ public class STOMPMessagesHandler {
                     isUsed = false;
                     Player player = new Player(name, tempTypeFight.getColorByPlayers());
                     tempTypeFight.addPlayer(player);
+                    playerRepository.save(player);
                 }
             }
         } else {
@@ -92,7 +101,12 @@ public class STOMPMessagesHandler {
                 } else {
                     isUsed = false;
                     Player player = new Player(name, typeFight.getColorByPlayers());
-                    typeFight.addPlayer(player);
+                    typeFight.addPlayer(player);  
+                    playerRepository.save(player);   
+
+                    List<Player> playerList = StreamSupport.stream(playerRepository.findAll().spliterator(), false)
+                                        .collect(Collectors.toList());
+                    System.out.println(playerList);
                 }
             }
 
