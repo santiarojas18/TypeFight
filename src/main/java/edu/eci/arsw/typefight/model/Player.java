@@ -3,6 +3,7 @@ package edu.eci.arsw.typefight.model;
 import java.io.Serializable;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
@@ -12,6 +13,7 @@ import lombok.Data;
 @RedisHash("Player")
 public class Player implements Serializable {
     @Id
+    @JsonProperty("name")
     private String name;
 
     private String color;

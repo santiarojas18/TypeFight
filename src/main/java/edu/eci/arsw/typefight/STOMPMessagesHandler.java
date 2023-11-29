@@ -4,7 +4,11 @@ import edu.eci.arsw.typefight.model.Player;
 import edu.eci.arsw.typefight.model.TypeFight;
 import edu.eci.arsw.typefight.repository.PlayerRepository;
 
+import edu.eci.arsw.typefight.service.PlayerService;
+import edu.eci.arsw.typefight.service.TypeFightService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -26,7 +30,14 @@ public class STOMPMessagesHandler {
     SimpMessagingTemplate msgt;
 
     @Autowired
+    PlayerService playerService;
+
+    @Autowired
     PlayerRepository playerRepository;
+
+    @Lazy
+    @Autowired
+    TypeFightService typeFightService;
     
     TypeFight typeFight, tempTypeFight;
     int goToPlay;
@@ -40,10 +51,12 @@ public class STOMPMessagesHandler {
 
     @Scheduled(fixedRate = 1000)
     public void getInitialWord() {
+        //System.out.println("-----Antes de agregar palabras-----: " + typeFightService.getTypeFightById(1).getCurrentWords());
         if(typeFight.getCurrentWords().size() < typeFight.MAX_CURRENT_WORDS){
             String currentWord = typeFight.getRandomWord(); // Obtén la palabra actual desde tu modelo TypeFight
             typeFight.addRandomWord(currentWord);
         }
+        //System.out.println("-------Después de agregar palabras-------:" + typeFightService.getTypeFightById(1).getCurrentWords());
         msgt.convertAndSend("/topic/showCurrentWord", typeFight.getCurrentWords()); // Envía la palabra actual a todos los jugadores.
     }
 
@@ -82,6 +95,7 @@ public class STOMPMessagesHandler {
     @MessageMapping("newplayer.{uniqueId}")
     public void handleNewPlayerEvent(String name, @DestinationVariable String uniqueId) {
         System.out.println("Jugador añadido:" + name);
+        typeFight = typeFightService.getTypeFightById(1);
         boolean isUsed;
         if (gameReset) {
             synchronized (typeFight) {
@@ -91,7 +105,7 @@ public class STOMPMessagesHandler {
                     isUsed = false;
                     Player player = new Player(name, tempTypeFight.getColorByPlayers());
                     tempTypeFight.addPlayer(player);
-                    playerRepository.save(player);
+                    playerService.addPlayer(player);
                 }
             }
         } else {
@@ -101,9 +115,8 @@ public class STOMPMessagesHandler {
                 } else {
                     isUsed = false;
                     Player player = new Player(name, typeFight.getColorByPlayers());
-                    typeFight.addPlayer(player);  
-                    playerRepository.save(player);   
-
+                    playerService.addPlayer(player);
+                    typeFight.addPlayer(player);
                     List<Player> playerList = StreamSupport.stream(playerRepository.findAll().spliterator(), false)
                                         .collect(Collectors.toList());
                     System.out.println(playerList);
@@ -111,8 +124,9 @@ public class STOMPMessagesHandler {
             }
 
         }
-
-        System.out.println(typeFight.getPlayersNames());
+        typeFightService.addTypeFight(typeFight);
+        System.out.println("Jugadore agregados después de volver a meter al redis: " + typeFight.getPlayers());
+        System.out.println("Nombres:" + typeFight.getPlayersNames());
         msgt.convertAndSend("/topic/newplayer." + uniqueId, isUsed);
 
     }
@@ -120,6 +134,7 @@ public class STOMPMessagesHandler {
     @MessageMapping("newentry")
     public void handleNewEntry () {
         System.out.println("Entrada registrada");
+        System.out.println("Jugadores del type: " + typeFight.getPlayers());
         if (gameReset){
             msgt.convertAndSend("/topic/newentry", tempTypeFight.getPlayers());
             if (tempTypeFight.getAmountOfPlayers() >= 2) {

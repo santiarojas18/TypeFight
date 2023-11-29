@@ -6,14 +6,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-
-public class TypeFight {
-
+@Data
+@RedisHash("TypeFight")
+public class TypeFight implements Serializable{
+    @Id
+    private final Integer id = 1;
     private Player winner;
-    private HashMap<String, Player> players;
+    private HashMap<String, Player> players = new HashMap<>();
     private ArrayList<String> words;
     private String[] colors;
     private ArrayList<String> currentWords = new ArrayList<>();
@@ -31,7 +34,7 @@ public class TypeFight {
                 "Té", "Uña", "Vaso", "Whisky", "Xilografía", "Yoyo", "Zoológico", "Alabanza", "Beso", "Caramelo",
                 "Dibujo", "Estrella", "Flauta", "Guitarra", "Hada", "Iglesia", "Juguete", "Kilogramo", "Lobo", "Mar",
                 "Nido", "Océano", "Pantalón", "Quirófano", "Reloj", "Sapo", "Trenza", "Unicornio", "Vela", "Zapato"));
-        players = new HashMap<>();
+        //players = new HashMap<>();
         colors = new String[] {"Rojo", "Amarillo", "Azul", "Verde", "Naranja"};
 
         //Mock
