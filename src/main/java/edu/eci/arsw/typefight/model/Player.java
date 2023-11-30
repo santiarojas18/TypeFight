@@ -37,6 +37,15 @@ public class Player implements Serializable {
 
     }
 
+    public Player(String name, String color, Integer health, Integer points, boolean isAlive){
+        this.name = name;
+        this.color = color;
+        this.health = health;
+        this.points = points;
+        this.alive = isAlive;
+
+    }
+
     public String getName() {
         return name;
     }

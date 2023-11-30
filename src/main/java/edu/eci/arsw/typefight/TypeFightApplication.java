@@ -3,7 +3,7 @@ package edu.eci.arsw.typefight;
 import edu.eci.arsw.typefight.model.Player;
 import edu.eci.arsw.typefight.model.TypeFight;
 import edu.eci.arsw.typefight.service.PlayerService;
-import edu.eci.arsw.typefight.service.TypeFightService;
+import edu.eci.arsw.typefight.service.CacheService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
