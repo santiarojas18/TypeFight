@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
@@ -14,13 +15,28 @@ import org.springframework.data.redis.core.RedisHash;
 @RedisHash("TypeFight")
 public class TypeFight implements Serializable{
     @Id
+    @JsonProperty("id")
     private final Integer id = 1;
+
+    @JsonProperty("winner")
     private Player winner;
+
+    @JsonProperty("players")
     private HashMap<String, Player> players = new HashMap<>();
+
+    @JsonProperty("words")
     private ArrayList<String> words;
+
+    @JsonProperty("colors")
     private String[] colors;
+
+    @JsonProperty("currentWords")
     private ArrayList<String> currentWords = new ArrayList<>();
+
+    @JsonProperty("playerNames")
     private ArrayList<String> playersNames = new ArrayList<>();
+
+    @JsonProperty("MAX_CURRENT_WORDS")
     public static final int MAX_CURRENT_WORDS = 5; // Máximo de palabras actuales
 
     public TypeFight(){
@@ -131,5 +147,9 @@ public class TypeFight implements Serializable{
 
     public void removeCurrentWord(String word){
         currentWords.remove(word);
+    }
+
+    public void setPlayers(HashMap<String, Player> players) {
+        this.players = players;
     }
 }

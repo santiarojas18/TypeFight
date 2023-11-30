@@ -16,9 +16,16 @@ public class Player implements Serializable {
     @JsonProperty("name")
     private String name;
 
+    @JsonProperty("color")
     private String color;
+
+    @JsonProperty("health")
     private Integer health;
+
+    @JsonProperty("points")
     private Integer points;
+
+    @JsonProperty("alive")
     private boolean alive;
 
     public Player(String name, String color){

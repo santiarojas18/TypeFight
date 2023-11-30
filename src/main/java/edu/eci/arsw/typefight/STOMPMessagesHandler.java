@@ -32,9 +32,6 @@ public class STOMPMessagesHandler {
     @Autowired
     PlayerService playerService;
 
-    @Autowired
-    PlayerRepository playerRepository;
-
     @Lazy
     @Autowired
     TypeFightService typeFightService;
@@ -44,7 +41,6 @@ public class STOMPMessagesHandler {
     boolean gameReset;
 
     public STOMPMessagesHandler() {
-        typeFight = new TypeFight();
         goToPlay = 0;
         gameReset = false;
     }
@@ -95,7 +91,7 @@ public class STOMPMessagesHandler {
     @MessageMapping("newplayer.{uniqueId}")
     public void handleNewPlayerEvent(String name, @DestinationVariable String uniqueId) {
         System.out.println("Jugador añadido:" + name);
-        typeFight = typeFightService.getTypeFightById(1);
+        typeFight = typeFightService.loadOrCreateTypeFight();
         boolean isUsed;
         if (gameReset) {
             synchronized (typeFight) {
@@ -117,16 +113,13 @@ public class STOMPMessagesHandler {
                     Player player = new Player(name, typeFight.getColorByPlayers());
                     playerService.addPlayer(player);
                     typeFight.addPlayer(player);
-                    List<Player> playerList = StreamSupport.stream(playerRepository.findAll().spliterator(), false)
-                                        .collect(Collectors.toList());
-                    System.out.println(playerList);
                 }
             }
 
         }
-        typeFightService.addTypeFight(typeFight);
+        typeFightService.saveSharedTypeFight(typeFight);
         System.out.println("Jugadore agregados después de volver a meter al redis: " + typeFight.getPlayers());
-        System.out.println("Nombres:" + typeFight.getPlayersNames());
+        System.out.println("type:" + typeFight.getPlayersNames());
         msgt.convertAndSend("/topic/newplayer." + uniqueId, isUsed);
 
     }
